@@ -11,7 +11,7 @@ Tools: Miniconda3 + PyCharm + Gurobi
 4. switch env to current env (e.g. ml).
 
 
-# Linear Programming Requirements:
+## Linear Programming Requirements:
 
 1. The red nodes on the map show the locations of our generators. Due to various factors, these generators have different capacities and costs for producing electricity, as shown in the following
 
@@ -41,7 +41,7 @@ Please provide us with the optimal total cost over the day for meeting the deman
 
 Please provide us with the optimal total cost over the day for meeting the demand in each of the six time periods from our generators.
 
-# Mixed-Integer Linear Programming 
+## Mixed-Integer Linear Programming 
 
 6. Going forward, we would like you to ignore our previous limit on changes to generator output across the day, as we think our new planning will help address that issue. You can base your future proposals on your response to our Communication 4 (with a cost of $3301661).
 
@@ -80,7 +80,7 @@ please provide us with the optimal total cost over the day for meeting the deman
 
 Please provide us with the optimal total cost over the day for meeting the demand in each of the six time periods from our combined generators.
 
-# Dynamic Programming 
+## Dynamic Programming 
 
 13. We need to supply electricity to a remote region that is not part of our network. A small gas generator will be ideal for this environment, but we are excited to try accompanying it with a new 80 MWh battery. This battery will allow us to have days where we do not need to turn on the generator, a positive outcome for the area.
 
