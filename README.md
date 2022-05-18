@@ -15,8 +15,10 @@ Tools: Miniconda3 + PyCharm + Gurobi
 
 1. The red nodes on the map show the locations of our generators. Due to various factors, these generators have different capacities and costs for producing electricity, as shown in the following
 
-Generator Node	42	23	46	15
+Generator Node	42	23	46	15 
+
 Capacity (MW)	403	834	830	616
+
 Cost ($/MWh)	75	63	80	78
 
 Please provide us with the optimal cost for meeting the current demand over a whole day from our generators
@@ -26,7 +28,9 @@ Please provide us with the optimal cost for meeting the current demand over a wh
 Please provide us with the optimal cost for meeting the current demand over a whole day from our generators
 
 3. We have realised that your proposal will exceed the limits on some of our transmission lines. The following 18 lines can effectively handle any load:
+
 20	21	30	31	48	49	56	57	70
+
 71	82	83	90	91	106	107	112	113
 
 However, all of the other lines have a limit of 126 MW. 
@@ -63,8 +67,9 @@ Please provide us with the optimal total cost over the day for meeting the deman
 
 10. In addition to the gas generator, we can also build a solar farm at one of the nodes. This will produce electricity over the day as follows:
 
-Time Period	0–4	4–8	 8–12	12–16	16–20	20–24
-Supply (MW)	0	20	 120	 110	  20	  0
+Time Period	 0–4	    4–8	   8–12	        12–16	     16–20	    20–24
+
+Supply (MW)	  0         20	   120	         110	       20	       0
 
 The cost of the solar electricity is $42/MWh. Where should we build this solar farm? Note that any existing demand at the node where it is located will still need to be met.
 
@@ -85,6 +90,7 @@ Please provide us with the optimal total cost over the day for meeting the deman
 13. We need to supply electricity to a remote region that is not part of our network. A small gas generator will be ideal for this environment, but we are excited to try accompanying it with a new 80 MWh battery. This battery will allow us to have days where we do not need to turn on the generator, a positive outcome for the area.
 
 The forecast daily electricity demands (MWh) for June are as follows:
+
 36, 27, 45, 24, 29, 24, 30, 35, 40, 46, 34, 31, 26, 28, 37, 31, 47, 33, 42, 25, 29, 40, 39, 42, 32, 24, 29, 22, 42, 41
 
 Each night we put in our order for the gas to power the generator for the following day. Effectively, our orders are placed in integer numbers of MWh, x, with a total cost of buying the gas and running the generator for a day of $300+80x0.9 (or $0, when x = 0).
