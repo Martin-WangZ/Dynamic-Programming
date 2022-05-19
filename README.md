@@ -25,7 +25,7 @@ Tools: Miniconda3 + PyCharm + Gurobi
 2. collect data 
 3. define variables according to objects 
 4. define formulation 
-5. give variables constraints  and integer constraints
+5. give variables constraints, especially give integer constraints
 
 ## Dynamic Programming
 
