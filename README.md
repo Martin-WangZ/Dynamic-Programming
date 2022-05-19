@@ -32,4 +32,4 @@ Tools: Miniconda3 + PyCharm + Gurobi
 1. define stages
 2. identify status 
 3. give actions
-4. form reward equation.
+4. form transition function.
