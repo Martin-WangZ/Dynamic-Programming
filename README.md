@@ -1,4 +1,4 @@
-# Operation-Research-With-Python
+# Operation-Research
 
 
 Tools: Miniconda3 + PyCharm + Gurobi
