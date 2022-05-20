@@ -33,3 +33,11 @@ Tools: Miniconda3 + PyCharm + Gurobi
 2. identify status 
 3. give actions
 4. form transition function.
+
+## Simulation 
+
+1. identify objects in a scene
+2. define variables based on these objects
+3. give probability distributions of  events in the scene
+4. simulate each event with the objects and corresponding probability distributions
+ 
