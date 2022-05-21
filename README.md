@@ -7,7 +7,7 @@ Tools: Miniconda3 + PyCharm + Gurobi
 2. apply for licence and activate Gurobi with it;
 3. copy the file gurobipy under path
    gurobi951\win64\your_current_python_version\lib
-   to envs\your_env\Lib;
+   to envs\your_env\Lib\side-packages;
 4. switch env to current env (e.g. ml).
 
 
