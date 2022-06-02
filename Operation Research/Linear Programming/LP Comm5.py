@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 from gurobipy import *
 
-DATA_PATH="Dataset"
+
+DATA_PATH= "Dataset"
 GRID_DATA_PATH=os.path.join(DATA_PATH,"grid.csv")
 NODE_DATA_PATH=os.path.join(DATA_PATH,"nodes.csv")
 # new dataset
@@ -17,7 +18,6 @@ Generator_Node=np.array([42,23,46,15])
 Generator_Capacity=np.array([403,834,830,616])
 Generator_Cost=np.array([75,63,80,78])
 No_Bound_Arc=np.array([20,21,30,31,48,49,56,57,70,71,82,83,90,91,106,107,112,113])
-
 
 # define a function to calculate the distance of each node to adjacent nodes
 def disNodeToAdj(node1,node2,nodes2=nodes2):
@@ -53,33 +53,28 @@ def findAdjNodes(nodeIndex,df=df):
 
 m=Model("Electricity Network With Loss and upbound and time")
 
+# add variables which is same as that part in communication 4
 arcList=df["Arc"]
 
-# build variables for time period 0  0-4
 X0={arc:m.addVar() for arc in arcList}
 Y0={g:m.addVar() for g in Generator_Node}
 
-# build variables for time period 1  4-8
 X1={arc:m.addVar() for arc in arcList}
 Y1={g:m.addVar() for g in Generator_Node}
 
-# build variables for time period 2  8-12
 X2={arc:m.addVar() for arc in arcList}
 Y2={g:m.addVar() for g in Generator_Node}
 
-# build variables for time period 3  12-16
 X3={arc:m.addVar() for arc in arcList}
 Y3={g:m.addVar() for g in Generator_Node}
 
-# build variables for time period 4  16-20
 X4={arc:m.addVar() for arc in arcList}
 Y4={g:m.addVar() for g in Generator_Node}
 
-# build variables for time period 5  20-24
 X5={arc:m.addVar() for arc in arcList}
 Y5={g:m.addVar() for g in Generator_Node}
 
-# Constraint 1: all non-negative and some arcs is not bigger than 126 transmittiong limitation
+# Constraint 1: same as communication 4
 m.addConstrs((X0[i]>=0 for i in arcList))
 m.addConstrs((X0[i]<=126 for i in arcList if i not in No_Bound_Arc))
 m.addConstrs((X1[i]>=0 for i in arcList))
@@ -101,10 +96,17 @@ m.addConstrs((Y3[i]>=0 for i in Generator_Node))
 m.addConstrs((Y4[i]>=0 for i in Generator_Node))
 m.addConstrs((Y5[i]>=0 for i in Generator_Node))
 
+# add constraint on limitation of power change. this is only difference with communication 4 solution
+m.addConstrs(((Y0[i]-Y1[i])**2<=177**2 for i in Generator_Node))
+m.addConstrs(((Y1[i]-Y2[i])**2<=177**2 for i in Generator_Node))
+m.addConstrs(((Y2[i]-Y3[i])**2<=177**2 for i in Generator_Node))
+m.addConstrs(((Y3[i]-Y4[i])**2<=177**2 for i in Generator_Node))
+m.addConstrs(((Y4[i]-Y5[i])**2<=177**2 for i in Generator_Node))
+m.addConstrs(((Y5[i]-Y0[i])**2<=177**2 for i in Generator_Node))
 
-# according to different time perior to build constraints
+
+# this function is same to that part in communication 4
 def constrFun(node, clock, data=df, nodes2=nodes2):
-    # for time period 0
     if clock == 0:
         adjNodes = findAdjNodes(node)
         if node in Generator_Node:
@@ -121,7 +123,6 @@ def constrFun(node, clock, data=df, nodes2=nodes2):
                 X0[row["Arc"]] for index, row in adjNodes.iterrows() if row["Node1"] == node) == int(
                 nodes2[nodes2["Node"] == node]["D0"]))
 
-    # for time period 1
     if clock == 4:
         adjNodes = findAdjNodes(node)
         if node in Generator_Node:
@@ -138,7 +139,6 @@ def constrFun(node, clock, data=df, nodes2=nodes2):
                 X1[row["Arc"]] for index, row in adjNodes.iterrows() if row["Node1"] == node) == int(
                 nodes2[nodes2["Node"] == node]["D1"]))
 
-    # for time period 2
     if clock == 8:
         adjNodes = findAdjNodes(node)
         if node in Generator_Node:
@@ -155,7 +155,6 @@ def constrFun(node, clock, data=df, nodes2=nodes2):
                 X2[row["Arc"]] for index, row in adjNodes.iterrows() if row["Node1"] == node) == int(
                 nodes2[nodes2["Node"] == node]["D2"]))
 
-    # for time period 3
     if clock == 12:
         adjNodes = findAdjNodes(node)
         if node in Generator_Node:
@@ -172,7 +171,6 @@ def constrFun(node, clock, data=df, nodes2=nodes2):
                 X3[row["Arc"]] for index, row in adjNodes.iterrows() if row["Node1"] == node) == int(
                 nodes2[nodes2["Node"] == node]["D3"]))
 
-    # for time period 4
     if clock == 16:
         adjNodes = findAdjNodes(node)
         if node in Generator_Node:
@@ -189,7 +187,6 @@ def constrFun(node, clock, data=df, nodes2=nodes2):
                 X4[row["Arc"]] for index, row in adjNodes.iterrows() if row["Node1"] == node) == int(
                 nodes2[nodes2["Node"] == node]["D4"]))
 
-    # for time period 5
     if clock == 20:
         adjNodes = findAdjNodes(node)
         if node in Generator_Node:
@@ -211,10 +208,9 @@ for clock in clockPoint:
     for node in nodes["Node"]:
         constrFun(node,clock,data=df,nodes2=nodes2)
 
-# set Objective function. each generated energy should multiple 4 hours
+# set Objective function through getting total generator at each time period and add them together,
 m.setObjective(quicksum(Y0[i]*Generator_Cost[Generator_Node==i] for i in Generator_Node)*4+quicksum(Y1[i]*Generator_Cost[Generator_Node==i] for i in Generator_Node)*4+quicksum(Y2[i]*Generator_Cost[Generator_Node==i] for i in Generator_Node)*4+quicksum(Y3[i]*Generator_Cost[Generator_Node==i] for i in Generator_Node)*4+quicksum(Y4[i]*Generator_Cost[Generator_Node==i] for i in Generator_Node)*4+quicksum(Y5[i]*Generator_Cost[Generator_Node==i] for i in Generator_Node)*4,GRB.MINIMIZE)
 
 m.optimize()
 
 print(m.objVal)
-

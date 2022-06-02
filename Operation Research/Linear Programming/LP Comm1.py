@@ -5,7 +5,7 @@ from gurobipy import *
 
 
 
-DATA_PATH="Dataset"
+DATA_PATH= "Dataset"
 GRID_DATA_PATH=os.path.join(DATA_PATH,"grid.csv")
 NODE_DATA_PATH=os.path.join(DATA_PATH,"nodes.csv")
 # import grid and node dataset
